@@ -218,4 +218,5 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # Footer
+
 st.markdown("<br><hr><center style='color: #888;'>Developed for Veda Technology Internship | Powered by Streamlit & Scikit-Learn</center>", unsafe_allow_html=True)
