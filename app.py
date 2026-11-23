@@ -167,7 +167,21 @@ for i in range(forecast_months):
     next_date = last_data.index[-1] + pd.DateOffset(months=1)
     last_data = pd.concat([last_data, pd.DataFrame({'Demand': [pred]}, index=[next_date])])
 
-future_dates = pd.date_range(start=df.index[-1] + pd.DateOffset(months=1), periods=forecast_months, freq='M')
+# ✅ Yahan 'M' ki jagah 'ME' use kiya gaya hai (pandas 3.x compatible)
+# Fallback: agar 'ME' bhi kisi purane pandas version mein na chale to 'M' try karega
+try:
+    future_dates = pd.date_range(
+        start=df.index[-1] + pd.DateOffset(months=1),
+        periods=forecast_months,
+        freq='ME'
+    )
+except ValueError:
+    future_dates = pd.date_range(
+        start=df.index[-1] + pd.DateOffset(months=1),
+        periods=forecast_months,
+        freq='M'
+    )
+
 forecast_df = pd.DataFrame({'Date': future_dates, 'Forecasted Demand': future_forecast}).set_index('Date')
 
 # --- Visualization ---
@@ -218,5 +232,4 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # Footer
-
 st.markdown("<br><hr><center style='color: #888;'>Developed for Veda Technology Internship | Powered by Streamlit & Scikit-Learn</center>", unsafe_allow_html=True)
